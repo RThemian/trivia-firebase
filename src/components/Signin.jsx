@@ -21,7 +21,7 @@ const Signin = () => {
           console.log(user);
           alert("You are logged in");
           //route to account page
-          navigate("/account");
+          navigate("/account", { state: { uid: auth.currentUser.uid } });
         })
         .catch((error) => {
           setError(error.message.toString());

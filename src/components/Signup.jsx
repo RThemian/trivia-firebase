@@ -10,6 +10,7 @@ const Signup = () => {
   const [password, setPassword] = React.useState("");
   const [userName, setUserName] = React.useState("");
   const [error, setError] = React.useState(null);
+
   let navigate = useNavigate();
   //handle submit to firebase and create user with email and password
   const handleSubmit = (e) => {
@@ -36,8 +37,9 @@ const Signup = () => {
     console.log("USER", auth.currentUser);
     //if user logged in then redirect to account page
     if (auth.currentUser) {
+      console.log("USER", auth.currentUser);
       //navigate to account page with auth.currentUser.uid as props
-      navigate("/account", { state: { uid: auth.currentUser.uid } });
+      navigate("/account", { user: { uid: auth.currentUser.uid } });
     }
   };
 

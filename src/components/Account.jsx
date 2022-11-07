@@ -1,14 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { db } from "./firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import LoadingSpinner from "./LoadingSpinner.jsx";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Account = () => {
-  //match logged in user to user in firestore and return user name
-  const [userName, setuserName] = React.useState("");
+  //match logged in user to user in firestore and return display name
+  const [displayName, setDisplayName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState(null);
@@ -18,7 +18,7 @@ const Account = () => {
   const date = new Date();
 
   const [user, setUser] = React.useState(null);
-  //get user logged in and user name
+  //get user logged in and display name
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -26,7 +26,7 @@ const Account = () => {
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
       console.log("USER", user);
-      //get user name from firestore matching email
+      //get display name from firestore matching email
       const usersRef = collection(db, "users");
 
       // Create a query against the collection.
@@ -39,10 +39,11 @@ const Account = () => {
 
       if (usersQuery) {
         const users = await getDocs(usersQuery);
+        console.log("USERS", users);
         users.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, " => ", doc.data());
-          setuserName(doc.data().userName);
+          setDisplayName(doc.data().displayName);
         });
         setEmail(user.email);
       }
@@ -79,17 +80,31 @@ const Account = () => {
     };
     getScores();
   }, [email]);
+  //create a date and time string every time user email is used and create firestore collection date_time_log
+  const date_time_log = date.toLocaleString();
+  console.log("DATE TIME LOG", date_time_log);
+  //create a new document in firestore collection date_time_log using date_time_log string and user email
+  React.useEffect(() => {
+    const addDateTimeLog = async () => {
+      const docRef = await db
+        .collection("date_time_log")
+        .doc(date_time_log)
+        .set({
+          email: email,
+        });
+    };
+  }, [email]);
 
   return (
     <>
-      <div className="max-w-[600px] mx-auto my-16 p-4 row">
-        <div className="col-span-2">
+      <div className="max-w-[600px] mx-auto my-16 p-4 flex flex-row ml-4">
+        <div className="col-span-2 p-4">
           <h1 className="text-2xl font-bold py-4">Account</h1>
-          {userName && email ? (
+          {displayName && email ? (
             <div>
-              <h3 className="py-2">User: {userName}</h3>
+              <h3 className="py-2">User: {displayName}</h3>
               <h3 className="py-2">Email: {email}</h3>
-              {/* user date with commas */}
+              {/* display date with commas */}
               <h3 className="py-2">
                 Date:{" "}
                 {date.toLocaleDateString("en-US", {
@@ -100,16 +115,16 @@ const Account = () => {
                 })}
               </h3>
 
-              {/* user time separately from date */}
+              {/* display time separately from date */}
               <h3 className="py-2">Time: {date.toLocaleTimeString()} </h3>
             </div>
           ) : (
             <LoadingSpinner />
           )}
         </div>
-        {/* user scores in a column alongside user */}
+        {/* display scores in a column alongside user */}
 
-        <div className="col-lg-2">
+        <div className="col-span-2 p-4">
           <h1 className="text-2xl font-bold py-4">Scores</h1>
           {scores.length > 0 ? (
             <table className="table-auto">
@@ -144,7 +159,17 @@ const Account = () => {
             <h3>No scores yet</h3>
           )}
         </div>
+        <div className="col-span-2 p-4">
+          <h1 className="text-2xl font-bold py-4">Play the next Quiz:</h1>
+          {/* make a button that routes to /quiz */}
+          <Link to="/quiz">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Play
+            </button>
+          </Link>
+        </div>
       </div>
+      {/* display table of all documents from collection date_time_log from firestore */}
 
       <div>
         <button
