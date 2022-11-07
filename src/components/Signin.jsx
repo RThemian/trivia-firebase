@@ -1,34 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { db, auth } from "./firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { UserAuth } from "./AuthContext";
 
 const Signin = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState(null);
+  const { signIn } = UserAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   let navigate = useNavigate();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(email, password);
-    if (email && password) {
-      //sign in user with email and password
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then((cred) => {
-          console.log(cred);
-          const user = cred.user;
-          console.log(user);
-          alert("You are logged in");
-          //route to account page
-          navigate("/account", { state: { uid: auth.currentUser.uid } });
-        })
-        .catch((error) => {
-          setError(error.message.toString());
-          console.log(error.code);
-        });
-    } else {
-      setError("Please fill out all fields");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await signIn(email, password);
+      navigate("/account");
+    } catch (e) {
+      setError(e.message);
+      console.log(e.message);
     }
   };
 

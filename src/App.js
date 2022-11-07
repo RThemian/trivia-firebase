@@ -2,6 +2,7 @@ import Signin from "./components/Signin";
 import Signup from "./components/Signup";
 import Account from "./components/Account";
 import Quiz from "./components/Quiz";
+import ProtectedRoute from "./components/ProtectedRoute";
 import React from "react";
 import "./index.css";
 import { BrowserRouter, Switch, Route, Routes } from "react-router-dom";
@@ -18,7 +19,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/account" element={<Account />} />
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="*" element={<h1>404 Not Found</h1>} />
           <Route path="/endscreen" element={<EndScreen />} />

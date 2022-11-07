@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "./firebase";
+import { UserAuth } from "./AuthContext";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -11,35 +12,17 @@ const Signup = () => {
   const [userName, setUserName] = React.useState("");
   const [error, setError] = React.useState(null);
 
+  const { createUser } = UserAuth();
+
   let navigate = useNavigate();
   //handle submit to firebase and create user with email and password
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password, userName);
-    if ((email, password, userName)) {
-      //create user with email and password and display name in firestore users collection
-
-      createUserWithEmailAndPassword(auth, email, password, userName).then(
-        (cred) => {
-          //add user name to user document in firestore
-          let data = {
-            uid: cred.user.uid,
-            userName: userName,
-            email: email,
-            password: password,
-          };
-          setDoc(doc(db, "users"), data);
-        }
-      );
-    } else {
-      setError("Please fill out all fields");
-    }
-    console.log("USER", auth.currentUser);
-    //if user logged in then redirect to account page
-    if (auth.currentUser) {
-      console.log("USER", auth.currentUser);
-      //navigate to account page with auth.currentUser.uid as props
-      navigate("/account", { user: { uid: auth.currentUser.uid } });
+    setError("");
+    try {
+      await createUser(email, password);
+    } catch (error) {
+      setError("Failed to create an account", error, error.message);
     }
   };
 
@@ -90,13 +73,12 @@ const Signup = () => {
         </div>
         <button
           onClick={handleSubmit}
-          className="border border-blue-500 bg-blue-600 hover:bg-blue-500 w-full p-4 my-2 text-white"
+          className="underline border border-blue-500 bg-blue-600 hover:bg-blue-500 w-full p-4 my-2 text-white"
           type="submit"
         >
-          <Link to="/account" className="underline">
-            Sign up
-          </Link>
+          Sign up
         </button>
+
         {error && <p className="text-red-500">{error}</p>}
       </form>
 

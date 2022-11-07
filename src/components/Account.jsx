@@ -5,19 +5,31 @@ import { auth } from "./firebase";
 import { db } from "./firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import LoadingSpinner from "./LoadingSpinner";
+import { UserAuth } from "./AuthContext";
 
 const Account = () => {
   //match logged in user to user in firestore and return display name
+  const { user, logout } = UserAuth();
   const [displayName, setDisplayName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState(null);
 
   let navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+      console.log("You are logged out");
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   //get date and time
+
   const date = new Date();
 
-  const [user, setUser] = React.useState(null);
   //get user logged in and display name
 
   onAuthStateChanged(auth, async (user) => {
@@ -81,29 +93,19 @@ const Account = () => {
     getScores();
   }, [email]);
   //create a date and time string every time user email is used and create firestore collection date_time_log
-  const date_time_log = date.toLocaleString();
-  console.log("DATE TIME LOG", date_time_log);
-  //create a new document in firestore collection date_time_log using date_time_log string and user email
-  React.useEffect(() => {
-    const addDateTimeLog = async () => {
-      const docRef = await db
-        .collection("date_time_log")
-        .doc(date_time_log)
-        .set({
-          email: email,
-        });
-    };
-  }, [email]);
 
   return (
     <>
       <div className="max-w-[600px] mx-auto my-16 p-4 flex flex-row ml-4">
         <div className="col-span-2 p-4">
           <h1 className="text-2xl font-bold py-4">Account</h1>
-          {displayName && email ? (
+          {email || user ? (
             <div>
-              <h3 className="py-2">User: {displayName}</h3>
+              {displayName ? (
+                <h3 className="py-2">User Name: {displayName}</h3>
+              ) : null}
               <h3 className="py-2">Email: {email}</h3>
+              <h3 className="py-2">User Login: {user.email}</h3>
               {/* display date with commas */}
               <h3 className="py-2">
                 Date:{" "}
@@ -173,9 +175,7 @@ const Account = () => {
 
       <div>
         <button
-          onClick={() => {
-            navigate("/");
-          }}
+          onClick={handleLogout}
           className="border border-blue-500 px-6 py-2 my-4"
         >
           Logout
