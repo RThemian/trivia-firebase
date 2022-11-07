@@ -7,8 +7,11 @@ const ProtectedRoute = ({ children }) => {
 
   if (!user) {
     return <Navigate to="/" />;
+  } else if (user) {
+    return children;
+  } else {
+    return <Navigate to="/" />;
   }
-  return children;
 };
 
 export default ProtectedRoute;
