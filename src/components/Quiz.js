@@ -147,7 +147,10 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
             <option value="5">5</option>
             <option value="10">10</option>
           </select>
-          <button className="quiz__footer__form__button" type="submit">
+          <button
+            className="border border-blue-500 bg-blue-600 hover:bg-blue-500 w-full p-4 my-2 text-white"
+            type="submit"
+          >
             Start Quiz
           </button>
         </form>
