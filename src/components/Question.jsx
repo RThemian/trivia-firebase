@@ -51,6 +51,18 @@ const Question = ({
                 </>
               );
             })}
+          <button
+            onClick={() => onSelectAnswer("next")}
+            className="border border-blue-500 bg-blue-600 hover:bg-blue-500 w-full p-4 my-2 text-white focus:outline-none focus:ring focus:ring-yellow-500"
+          >
+            Next
+          </button>
+          <button
+            onClick={() => onSelectAnswer("next")}
+            className="border border-blue-500 bg-blue-600 hover:bg-blue-500 w-full p-4 my-2 text-white focus:outline-none focus:ring focus:ring-yellow-500"
+          >
+            Previous
+          </button>
         </>
       )}
     </div>

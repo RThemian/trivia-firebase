@@ -97,7 +97,10 @@ const Account = () => {
 
   return (
     <>
-      <div className="max-w-[600px] mx-auto my-16 p-4 flex flex-row ml-4">
+      <div
+        datatheme="lemonade"
+        className="max-w-[600px] mx-auto my-16 p-4 flex flex-row ml-4"
+      >
         <div className="col-span-2 p-4">
           <h1 className="text-2xl font-bold py-4">Account</h1>
           {displayName && email ? (
@@ -176,7 +179,8 @@ const Account = () => {
           onClick={() => {
             navigate("/");
           }}
-          className="border border-blue-500 px-6 py-2 my-4"
+          className="btn btn-primary"
+          //old className = border border-blue-500 px-6 py-2 my-4
         >
           Logout
         </button>

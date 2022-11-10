@@ -108,9 +108,14 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
   return (
     <div className="quiz">
       <div className="quiz__header">
-        <h1 className="quiz__title">Quiz</h1>
-        <div className="quiz__score">Score: {score}</div>
+        {/* style with tailwind for header bold font text center*/}
+        <h1 className="text-center text-3xl font-bold mt-10 ">
+          Choose your Quiz
+        </h1>
+
+        <div className="flex-row">Score: {score}</div>
       </div>
+
       {currentQuestionIndex < questions.length ? (
         <Question
           question={questions[currentQuestionIndex].question}
@@ -123,38 +128,40 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
           questionAmount={questionAmount}
         />
       ) : (
-        <div className="quiz__end">
-          <h2 className="quiz__end__title">Quiz Complete</h2>
+        <div className="flex-row">
+          <h2 className="font-weight">Quiz Complete</h2>
           <div className="quiz__end__score">Score: {score}</div>
           <button className="quiz__end__restart" onClick={handleRestart}>
             Restart
           </button>
         </div>
       )}
-      <div className="quiz__footer">
-        <form className="quiz__footer__form" onSubmit={loadQuestions}>
-          <label htmlFor="difficulty">Difficulty</label>
-          <select id="difficulty" name="difficulty">
-            {difficultyLevels.map((level) => (
-              <option key={level.value} value={level.value}>
-                {level.value}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="questionAmount">Number of Questions</label>
-          <select id="questionAmount" name="questionAmount">
-            <option value="3">3</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-          </select>
-          <button
-            className="border border-blue-500 bg-blue-600 hover:bg-blue-500 w-full p-4 my-2 text-white"
-            type="submit"
-          >
-            Start Quiz
-          </button>
-        </form>
-      </div>
+      {questions && (
+        <div className="quiz__footer">
+          <form className="quiz__footer__form" onSubmit={loadQuestions}>
+            <label htmlFor="difficulty">Difficulty</label>
+            <select id="difficulty" name="difficulty">
+              {difficultyLevels.map((level) => (
+                <option key={level.value} value={level.value}>
+                  {level.value}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="questionAmount">Number of Questions</label>
+            <select id="questionAmount" name="questionAmount">
+              <option value="3">3</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+            </select>
+            <button
+              className="border border-blue-500 bg-blue-600 hover:bg-blue-500 w-full p-4 my-2 text-white"
+              type="submit"
+            >
+              Start Quiz
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
