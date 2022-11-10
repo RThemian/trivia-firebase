@@ -1,8 +1,8 @@
-//get trivia questions from api
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Question from "./Question";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "./LoadingSpinner";
 
 //put the randomizeArray function outside of the main component to controll its use
 
@@ -34,9 +34,11 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [questionAmount, setQuestionAmount] = useState(3);
+  const [isLoading, setIsLoading] = useState(false);
   //const [score, setScore] = useState(0);
 
   const loadQuestions = (e) => {
+    setIsLoading(true);
     e.preventDefault();
     setDiffSelect(document.querySelector("#difficulty").value);
     console.log(
@@ -45,7 +47,6 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
     );
 
     return axios
-
       .get(
         `https://opentdb.com/api.php?amount=${questionAmount}&difficulty=${diffSelect}&type=multiple`
       )
@@ -57,111 +58,211 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
         const questions = response.data.results.map((q) => {
           return {
             // add "selectedAnswer" prop to each question
-
             selectedAnswer: null,
             // add "answers" prop to randomize answers up front
             answers: randomizeArray([...q.incorrect_answers, q.correct_answer]),
-
-            // add "correctAnswer" prop to each question
-            correctAnswer: q.correct_answer,
-            // add "question" prop to each question
-            question: q.question,
+            // copy rest of object
+            ...q,
           };
         });
         setQuestions(questions);
         setPointsPossible(questions.length);
-        setCurrentQuestionIndex(0);
       })
       .catch((error) => {
         // handle error
         console.log(error);
       })
-      .finally(() => {});
+      .then(() => {
+        // always executed
+        console.log("axios executed!");
+        // If a user clicks "Load Questions" while in the middle of
+        // an existing quiz, we start them back at 0 with the new
+        // questions.
+        setScore((score) => (score = 0));
+        setCurrentQuestionIndex(0);
+      });
   };
 
-  const handleAnswer = (answer) => {
-    const newQuestions = [...questions];
-    newQuestions[currentQuestionIndex].selectedAnswer = answer;
-
-    setQuestions(newQuestions);
+  //
+  const HandleNextQuestion = () => {
+    //add if correct else return
+    if (
+      questions[currentQuestionIndex].selectedAnswer ===
+      questions[currentQuestionIndex].correct_answer
+    ) {
+      alert("Correct!");
+      //ensures it always passes "score => score + 1"
+      setScore((score) => score + 1);
+      setCurrentQuestionIndex((previousIndex) => {
+        if (previousIndex < questions.length) {
+          return previousIndex + 1;
+        }
+      });
+    } else {
+      alert("Wrong");
+      setCurrentQuestionIndex((previousIndex) => {
+        if (previousIndex < questions.length) {
+          return previousIndex + 1;
+        }
+      });
+    }
   };
 
-  const handleNextQuestion = () => {
-    const newScore =
-      questions[currentQuestionIndex].correctAnswer ===
-      questions[currentQuestionIndex].selectedAnswer
-        ? score + 1
-        : score;
-    setScore(newScore);
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+  // create link to EndScreen with useNavigate
+  let navigate = useNavigate();
+
+  const handleFinishQuiz = () => {
+    if (
+      questions[currentQuestionIndex].selectedAnswer ===
+      questions[currentQuestionIndex].correct_answer
+    ) {
+      alert("Correct!");
+      //ensures it always passes "score => score + 1"
+      setScore((score) => score + 1);
+    } else {
+      alert("Wrong!!");
+    }
+    let path = "/endscreen";
+    navigate(path);
   };
 
+  //remove handlePreviousQuestion
+  /*
   const handlePreviousQuestion = () => {
-    setCurrentQuestionIndex(currentQuestionIndex - 1);
+    setCurrentQuestionIndex((previousIndex) => {
+      if (previousIndex > 0) {
+        return previousIndex - 1;
+      }
+    });
   };
+  */
+  //implement specCharRemover at Quiz level
+  //questions[currentQuestionIndex].selectedAnswer send this nextQuestion component
 
-  const handleRestart = () => {
-    setCurrentQuestionIndex(0);
-    setScore(0);
+  const setSelectedAnswerForQuestion = (chosenAnswer) => {
+    const questionsCopy = [...questions];
+    const currentSelectedAnswer =
+      questionsCopy[currentQuestionIndex].selectedAnswer;
+    // this allows to deselect an already selected
+    // answer so that nothing is selected.
+    if (currentSelectedAnswer === chosenAnswer) {
+      questionsCopy[currentQuestionIndex].selectedAnswer = null;
+    } else {
+      questionsCopy[currentQuestionIndex].selectedAnswer = chosenAnswer;
+    }
+    setQuestions(questionsCopy);
   };
 
   return (
-    <div className="quiz">
-      <div className="quiz__header">
-        <h1 className="quiz__title">Quiz</h1>
-        <div className="quiz__score">Score: {score}</div>
+    <>
+      <div>
+        <h4>Let's see what you know!</h4>
       </div>
-      {currentQuestionIndex < questions.length ? (
-        <Question
-          question={questions[currentQuestionIndex].question}
-          answers={questions[currentQuestionIndex].answers}
-          selectedAnswer={questions[currentQuestionIndex].selectedAnswer}
-          onAnswer={handleAnswer}
-          onNext={handleNextQuestion}
-          onPrevious={handlePreviousQuestion}
-          currentQuestionIndex={currentQuestionIndex}
-          questionAmount={questionAmount}
-        />
-      ) : (
-        <div className="quiz__end">
-          <h2 className="quiz__end__title">Quiz Complete</h2>
-          <div className="quiz__end__score">Score: {score}</div>
-          <button className="quiz__end__restart" onClick={handleRestart}>
-            Restart
-          </button>
-        </div>
-      )}
-      <div className="quiz__footer">
-        <form className="quiz__footer__form" onSubmit={loadQuestions}>
-          <label htmlFor="difficulty">Difficulty</label>
-          <select id="difficulty" name="difficulty">
-            {difficultyLevels.map((level) => (
-              <option key={level.value} value={level.value}>
-                {level.value}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="questionAmount">Number of Questions</label>
-          <select id="questionAmount" name="questionAmount">
-            <option value="3">3</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-          </select>
-          <button
-            className="border border-blue-500 bg-blue-600 hover:bg-blue-500 w-full p-4 my-2 text-white"
-            type="submit"
-          >
-            Start Quiz
-          </button>
-        </form>
+
+      <div>
+        {questions.length === 0 && (
+          <div className="container">
+            <h3>QUIZ</h3>
+            <div className="btn btn-4 mb-4">
+              <p className="text-white">Choose difficulty level</p>
+              <select className="form-select" id="difficulty">
+                {difficultyLevels.map((level) => {
+                  return (
+                    <option
+                      key={Math.random() * difficultyLevels.length}
+                      value={level.value}
+                    >
+                      {level.value}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+
+            <div className="btn btn-4 mb-4">
+              <p className="text-white">Choose how many questions</p>
+              <select
+                className="form-select"
+                id="questionAmount"
+                defaultValue="easy"
+                onChange={(e) => setQuestionAmount(e.target.value)}
+              >
+                <option key={3} value={3}>
+                  3
+                </option>
+                <option key={5} value={5}>
+                  5
+                </option>
+                <option key={10} value={10}>
+                  10
+                </option>
+              </select>
+            </div>
+            <br />
+
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <button className="btn btn-2" onClick={loadQuestions}>
+                Load Questions
+              </button>
+            )}
+          </div>
+        )}
       </div>
-    </div>
+
+      <div>
+        {questions[currentQuestionIndex] !== undefined && (
+          <Question
+            key={Math.random() * questions.length + 1}
+            difficultyLevel={diffSelect}
+            question={questions[currentQuestionIndex].question}
+            answers={questions[currentQuestionIndex].answers}
+            selectedAnswer={questions[currentQuestionIndex].selectedAnswer}
+            onSelectAnswer={setSelectedAnswerForQuestion}
+          />
+        )}
+      </div>
+
+      <div>
+        <button
+          className="btn btn-secondary"
+          disabled={
+            // must select an answer to continue
+            (questions[currentQuestionIndex] &&
+              questions[currentQuestionIndex].selectedAnswer === null) ||
+            // if there are no questions
+            questions.length === 0 ||
+            // if we are at the last question
+            currentQuestionIndex + 1 === questions.length
+          }
+          onClick={HandleNextQuestion}
+        >
+          Next Question
+        </button>
+        {/* TODO: finish quiz button */}
+        <button
+          className="btn btn-3 m-2"
+          onClick={handleFinishQuiz}
+          disabled={
+            // only show finish button if we are on last question
+            currentQuestionIndex + 1 !== questions.length ||
+            // and the user has selected an answer for that last question
+            (questions[currentQuestionIndex] &&
+              questions[currentQuestionIndex].selectedAnswer === null)
+          }
+        >
+          Finish Quiz
+        </button>
+        {questions.length > 0 && (
+          <h5>
+            Question {currentQuestionIndex + 1} / {questions.length}
+          </h5>
+        )}
+        <h5>Score {score}</h5>
+      </div>
+    </>
   );
 };
 
 export default Quiz;
-
-// randomize answers and add to questions state
-// set current question index to 0
-//toggle through questions one at a time
-//show score at end
