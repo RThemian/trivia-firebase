@@ -163,8 +163,8 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
         {questions.length === 0 && (
           <div className="container">
             <h3>QUIZ</h3>
-            <div className="btn btn-4 mb-4">
-              <p className="text-white">Choose difficulty level</p>
+            <div className="btn btn-secondary m-4">
+              <p className="text-white m-4">Choose difficulty level</p>{" "}
               <select className="form-select" id="difficulty">
                 {difficultyLevels.map((level) => {
                   return (
@@ -179,8 +179,8 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
               </select>
             </div>
 
-            <div className="btn btn-4 mb-4">
-              <p className="text-white">Choose how many questions</p>
+            <div className="btn btn-primary m-4">
+              <p className="text-white m-4">Choose how many questions</p>{" "}
               <select
                 className="form-select"
                 id="questionAmount"
@@ -203,7 +203,7 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
             {isLoading ? (
               <LoadingSpinner />
             ) : (
-              <button className="btn btn-2" onClick={loadQuestions}>
+              <button className="btn btn-outline" onClick={loadQuestions}>
                 Load Questions
               </button>
             )}
