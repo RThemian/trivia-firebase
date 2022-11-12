@@ -7,6 +7,7 @@ import "./index.css";
 import { BrowserRouter, Switch, Route, Routes } from "react-router-dom";
 import EndScreen from "./components/EndScreen";
 import { AuthContextProvider } from "./components/AuthContext";
+import MyDropdown from "./components/MyDropDown";
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
       <h1 className="text-center text-3xl font-bold mt-10 ">
         Quiz App with React, Firebase, and Tailwind CSS
       </h1>
+      <div className="border border-blue-400 bg-blue-400">
+        <MyDropdown />
+      </div>
       <AuthContextProvider>
         <Routes>
           <Route path="/" element={<Signin />} />

@@ -163,47 +163,53 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
         {questions.length === 0 && (
           <div className="container">
             <h3>QUIZ</h3>
-            <div className="btn btn-secondary m-4">
-              <p className="text-white m-4">Choose difficulty level</p>{" "}
-              <select className="form-select" id="difficulty">
-                {difficultyLevels.map((level) => {
-                  return (
-                    <option
-                      key={Math.random() * difficultyLevels.length}
-                      value={level.value}
-                    >
-                      {level.value}
-                    </option>
-                  );
-                })}
-              </select>
+            <div className="flex flex-row">
+              <div className="btn btn-secondary m-4">
+                <p className="text-white m-4">Choose difficulty level</p>{" "}
+                <select className="form-select text-black" id="difficulty">
+                  {difficultyLevels.map((level) => {
+                    return (
+                      <option
+                        key={Math.random() * difficultyLevels.length}
+                        value={level.value}
+                      >
+                        {level.value}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+              <div className="btn btn-primary m-4">
+                <p className="text-white m-4">Choose how many questions</p>{" "}
+                <select
+                  className="form-select text-black"
+                  id="questionAmount"
+                  defaultValue="easy"
+                  onChange={(e) => setQuestionAmount(e.target.value)}
+                >
+                  <option key={3} value={3}>
+                    3
+                  </option>
+                  <option key={5} value={5}>
+                    5
+                  </option>
+                  <option key={10} value={10}>
+                    10
+                  </option>
+                </select>
+              </div>
             </div>
 
-            <div className="btn btn-primary m-4">
-              <p className="text-white m-4">Choose how many questions</p>{" "}
-              <select
-                className="form-select"
-                id="questionAmount"
-                defaultValue="easy"
-                onChange={(e) => setQuestionAmount(e.target.value)}
-              >
-                <option key={3} value={3}>
-                  3
-                </option>
-                <option key={5} value={5}>
-                  5
-                </option>
-                <option key={10} value={10}>
-                  10
-                </option>
-              </select>
-            </div>
             <br />
 
             {isLoading ? (
               <LoadingSpinner />
             ) : (
-              <button className="btn btn-outline" onClick={loadQuestions}>
+              <button
+                className="btn btn-outline w-full m-4"
+                onClick={loadQuestions}
+              >
                 Load Questions
               </button>
             )}
