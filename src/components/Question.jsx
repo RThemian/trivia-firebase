@@ -1,13 +1,7 @@
 import React from "react";
 import { NewRadioGroup } from "../headlessComp/NewRadioGroup";
 
-const Question = ({
-  difficultyLevel,
-  question,
-  answers = [],
-  selectedAnswer = "",
-  onSelectAnswer,
-}) => {
+const Question = ({ difficultyLevel, question, answers = [] }) => {
   const removeSpecChar = (props) => {
     let result = props
       .replace(/&quot;/g, "''")
@@ -24,15 +18,22 @@ const Question = ({
   };
 
   return (
-    <div>
+    <div className="card items-center">
       {question && (
         <>
-          <h1>{removeSpecChar(question)}</h1>
-          <h5>
-            Difficulty Level:{" "}
-            <span style={{ color: "#FF6150" }}>{difficultyLevel}</span>{" "}
-          </h5>
-          {answers && answers.length && <NewRadioGroup answers={answers} />}
+          <div className="card w-50 bg-primary text-primary-content justify-center items-center">
+            <div className="card-body">
+              <h1 className="text-4xl">{removeSpecChar(question)}</h1>
+              <h5>
+                Difficulty Level:{" "}
+                <span style={{ color: "#FF6150" }}>{difficultyLevel}</span>{" "}
+              </h5>
+            </div>
+          </div>
+
+          {answers && answers.length && (
+            <NewRadioGroup removeSpecChar={removeSpecChar} answers={answers} />
+          )}
         </>
       )}
     </div>

@@ -22,8 +22,8 @@ const plans = [
   },
 ];
 
-export const NewRadioGroup = ({ answers }) => {
-  const [selected, setSelected] = useState(answers[0]);
+export const NewRadioGroup = ({ answers, removeSpecChar }) => {
+  const [selected, setSelected] = useState(removeSpecChar(answers[0]));
 
   return (
     <div className="w-full px-4 py-16">
@@ -33,8 +33,8 @@ export const NewRadioGroup = ({ answers }) => {
           <div className="space-y-2">
             {answers.map((answer) => (
               <RadioGroup.Option
-                key={answer.name}
-                value={answer}
+                key={answer}
+                value={removeSpecChar(answer)}
                 className={({ active, checked }) =>
                   `${
                     active
@@ -51,14 +51,14 @@ export const NewRadioGroup = ({ answers }) => {
                   <>
                     <div className="flex w-full items-center justify-between">
                       <div className="flex items-center">
-                        <div className="text-sm">
+                        <div className="text-lg">
                           <RadioGroup.Label
                             as="p"
                             className={`font-medium  ${
                               checked ? "text-white" : "text-gray-900"
                             }`}
                           >
-                            {answer}
+                            {removeSpecChar(answer)}
                           </RadioGroup.Label>
                           <RadioGroup.Description
                             as="span"

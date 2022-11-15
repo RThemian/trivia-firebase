@@ -30,7 +30,7 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
     { value: "hard" },
   ];
   const [score, setScore] = useState(0);
-  const [diffSelect, setDiffSelect] = useState("easy");
+  const [diffSelect, setDiffSelect] = useState(difficultyLevels[0].value);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [questionAmount, setQuestionAmount] = useState(3);
@@ -106,11 +106,15 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
   };
 
   return (
-    <div className="quiz">
-      <div className="quiz__header">
-        <h1 className="quiz__title">Quiz</h1>
-        <div className="quiz__score">Score: {score}</div>
+    <div className="card bg-secondary text-primary-content">
+      <div className="card-body">
+        <h1 className="card-title">Quiz</h1>
+        <p>If a dog chews shoes whose shoes does he choose?</p>
+        <div className="card-actions justify-end">
+          <h4>Score: {score}</h4>
+        </div>
       </div>
+
       {currentQuestionIndex < questions.length ? (
         <div>
           <Question
@@ -133,18 +137,30 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
           </button>
         </div>
       )}
-      <div className="quiz__footer">
-        <form className="quiz__footer__form" onSubmit={loadQuestions}>
-          <label htmlFor="difficulty">Difficulty</label>
-          <select id="difficulty" name="difficulty">
+      <div className="rounded-md m-4 p-4 flex-row bg-blue-500">
+        <form className="text-2xl mx-2 px-3" onSubmit={loadQuestions}>
+          <label htmlFor="difficulty" className="m-2">
+            Difficulty
+          </label>
+          <select
+            id="difficulty"
+            name="difficulty"
+            className="text-base text-red-400 p-2 rounded-md"
+          >
             {difficultyLevels.map((level) => (
               <option key={level.value} value={level.value}>
                 {level.value}
               </option>
             ))}
           </select>
-          <label htmlFor="questionAmount">Number of Questions</label>
-          <select id="questionAmount" name="questionAmount">
+          <label htmlFor="questionAmount" className="m-2">
+            Number of Questions
+          </label>
+          <select
+            id="questionAmount"
+            name="questionAmount"
+            className="text-red-400 p-2 rounded-md"
+          >
             <option value="3">3</option>
             <option value="5">5</option>
             <option value="10">10</option>
