@@ -1,6 +1,9 @@
+import { RadioGroup } from "@headlessui/react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "./AuthContext";
+
+import { NewRadioGroup } from "../headlessComp/NewRadioGroup";
 
 const Signin = () => {
   const { signIn } = UserAuth();
@@ -25,6 +28,7 @@ const Signin = () => {
     <div className="max-w-30 my-16 p-4 mx-auto">
       <div>
         <h1 className="text-2xl font-bold py-2">Sign in</h1>
+        <NewRadioGroup />
       </div>
       <form className="mx-auto" onSubmit={handleSubmit}>
         <div className="py-2 flex flex-col">

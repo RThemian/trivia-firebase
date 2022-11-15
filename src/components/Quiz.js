@@ -112,16 +112,18 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
         <div className="quiz__score">Score: {score}</div>
       </div>
       {currentQuestionIndex < questions.length ? (
-        <Question
-          question={questions[currentQuestionIndex].question}
-          answers={questions[currentQuestionIndex].answers}
-          selectedAnswer={questions[currentQuestionIndex].selectedAnswer}
-          onAnswer={handleAnswer}
-          onNext={handleNextQuestion}
-          onPrevious={handlePreviousQuestion}
-          currentQuestionIndex={currentQuestionIndex}
-          questionAmount={questionAmount}
-        />
+        <div>
+          <Question
+            question={questions[currentQuestionIndex].question}
+            answers={questions[currentQuestionIndex].answers}
+            selectedAnswer={questions[currentQuestionIndex].selectedAnswer}
+            onAnswer={handleAnswer}
+            onNext={handleNextQuestion}
+            onPrevious={handlePreviousQuestion}
+            currentQuestionIndex={currentQuestionIndex}
+            questionAmount={questionAmount}
+          />
+        </div>
       ) : (
         <div className="quiz__end">
           <h2 className="quiz__end__title">Quiz Complete</h2>

@@ -1,4 +1,5 @@
 import React from "react";
+import { NewRadioGroup } from "../headlessComp/NewRadioGroup";
 
 const Question = ({
   difficultyLevel,
@@ -31,9 +32,15 @@ const Question = ({
             Difficulty Level:{" "}
             <span style={{ color: "#FF6150" }}>{difficultyLevel}</span>{" "}
           </h5>
-          {answers &&
-            answers.length &&
-            answers.map((answer) => {
+          {answers && answers.length && <NewRadioGroup answers={answers} />}
+        </>
+      )}
+    </div>
+  );
+};
+
+{
+  /* answers.map((answer) => {
               return (
                 <>
                   <button
@@ -45,17 +52,17 @@ const Question = ({
                     onClick={() => onSelectAnswer(answer)}
                   >
                     {removeSpecChar(answer)}
-                  </button>
-                  <br />
-                  <br />
-                </>
-              );
-            })}
-        </>
-      )}
-    </div>
-  );
-};
+                  </button> */
+}
+{
+  /* <br /> */
+}
+{
+  /* <br /> */
+}
+
+// </>
+
 /*
 const Question = ({ questions }) => {
   console.log(questions);
