@@ -69,6 +69,7 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
           };
         });
         setQuestions(questions);
+        setDiffSelect(document.getElementById("#difficulty").value);
         setPointsPossible(questions.length);
         setCurrentQuestionIndex(0);
       })
@@ -87,12 +88,24 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
   };
 
   const handleNextQuestion = () => {
+    console.log("current question index", currentQuestionIndex);
+    console.log(
+      "questions index",
+      questions[currentQuestionIndex].correctAnswer
+    );
+    console.log(
+      "selected answer",
+      questions[currentQuestionIndex].selectedAnswer
+    );
+
     const newScore =
       questions[currentQuestionIndex].correctAnswer ===
       questions[currentQuestionIndex].selectedAnswer
         ? score + 1
         : score;
+
     setScore(newScore);
+    alert("score", newScore);
     setCurrentQuestionIndex(currentQuestionIndex + 1);
   };
 
@@ -107,16 +120,10 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
 
   return (
     <div className="card bg-secondary text-primary-content">
-      <div className="card-body">
-        <h1 className="card-title">Quiz</h1>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
-        <div className="card-actions justify-end">
-          <h4>Score: {score}</h4>
-        </div>
-      </div>
+      <div className="card-body"></div>
 
       {currentQuestionIndex < questions.length ? (
-        <div>
+        <div className="m-4 content-center ">
           <Question
             question={questions[currentQuestionIndex].question}
             answers={questions[currentQuestionIndex].answers}
@@ -126,7 +133,17 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
             onPrevious={handlePreviousQuestion}
             currentQuestionIndex={currentQuestionIndex}
             questionAmount={questionAmount}
+            difficultyLevel={diffSelect}
           />
+          <div className="flex flex-col justify-center items-center">
+            <button
+              onClick={handleNextQuestion}
+              id="nextbutton"
+              className="text-base btn btn-active btn-accent   "
+            >
+              Next Question
+            </button>
+          </div>
         </div>
       ) : (
         <div className="quiz__end">
@@ -137,39 +154,46 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
           </button>
         </div>
       )}
-      <div className="rounded-md m-4 p-4 flex-row bg-blue-500">
-        <form className="text-2xl mx-2 px-3" onSubmit={loadQuestions}>
-          <label htmlFor="difficulty" className="m-2">
-            Difficulty
-          </label>
-          <select
-            id="difficulty"
-            name="difficulty"
-            className="text-base text-red-400 p-2 rounded-md"
-          >
-            {difficultyLevels.map((level) => (
-              <option key={level.value} value={level.value}>
-                {level.value}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="questionAmount" className="m-2">
-            Number of Questions
-          </label>
-          <select
-            id="questionAmount"
-            name="questionAmount"
-            className="text-red-400 p-2 rounded-md"
-          >
-            <option value="3">3</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-          </select>
-          <button className="quiz__footer__form__button" type="submit">
-            Start Quiz
-          </button>
-        </form>
-      </div>
+      {questions.length < 1 && ( //if there are no questions, show the form
+        <div className="rounded-md m-4 p-4 flex-row bg-blue-500">
+          <form className="text-2xl mx-2 px-3" onSubmit={loadQuestions}>
+            <label htmlFor="difficulty" className="m-2">
+              Difficulty
+            </label>
+            <select
+              id="difficulty"
+              name="difficulty"
+              className="text-base text-red-400 p-2 rounded-md"
+            >
+              {difficultyLevels.map((level) => (
+                <option key={level.value} value={level.value}>
+                  {level.value}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="questionAmount" className="m-2">
+              Number of Questions
+            </label>
+            <select
+              id="questionAmount"
+              name="questionAmount"
+              className="text-red-400 p-2 rounded-md"
+            >
+              <option value="3">3</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+            </select>
+            <div className="items-center">
+              <button
+                className="m-4 btn btn-secondary btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+                type="submit"
+              >
+                Start Quiz
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

@@ -24,10 +24,12 @@ const Question = ({ difficultyLevel, question, answers = [] }) => {
           <div className="card w-50 bg-primary text-primary-content justify-center items-center">
             <div className="card-body">
               <h1 className="text-4xl">{removeSpecChar(question)}</h1>
-              <h5>
+              <h2>
                 Difficulty Level:{" "}
-                <span style={{ color: "#FF6150" }}>{difficultyLevel}</span>{" "}
-              </h5>
+                <span style={{ color: "#FF6150" }}>
+                  {difficultyLevel.toUpperCase()}
+                </span>{" "}
+              </h2>
             </div>
           </div>
 
