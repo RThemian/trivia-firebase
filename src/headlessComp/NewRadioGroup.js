@@ -25,6 +25,10 @@ const plans = [
 export const NewRadioGroup = ({ answers, removeSpecChar }) => {
   const [selected, setSelected] = useState(removeSpecChar(answers[0]));
 
+  function getSelected() {
+    return selected;
+  }
+
   return (
     <div className="w-full px-4 py-16">
       <div className="mx-auto w-full max-w-md">

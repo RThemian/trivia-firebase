@@ -139,7 +139,7 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
             <button
               onClick={handleNextQuestion}
               id="nextbutton"
-              className="text-base btn btn-active btn-accent   "
+              className="m-4 btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg"
             >
               Next Question
             </button>
@@ -185,7 +185,7 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
             </select>
             <div className="items-center">
               <button
-                className="m-4 btn btn-secondary btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+                className="m-4 btn btn-secondary btn-xs sm:btn-sm md:btn-md lg:btn-lg"
                 type="submit"
               >
                 Start Quiz
