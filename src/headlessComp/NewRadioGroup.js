@@ -4,6 +4,7 @@ import { UserAuth } from "./../components/AuthContext";
 
 export const NewRadioGroup = ({ answers, removeSpecChar }) => {
   const { selected, setSelected } = UserAuth();
+  const { score, setScore } = UserAuth();
 
   // const [selected, setSelected] = useState(null);
   //removeSpecChar(answers[0])
@@ -20,9 +21,16 @@ export const NewRadioGroup = ({ answers, removeSpecChar }) => {
 
   return (
     <div className="w-full px-4 py-16">
+      <div className="mb-3">
+        <h1 className="heading-1 flex flex-col justify-center items-center">
+          <span className="text-2xl text-white badge badge-lg bg-blue-600 p-10">
+            Score = {score}
+          </span>
+        </h1>
+      </div>
       <div className="mx-auto w-full max-w-md">
         <RadioGroup value={selected} onChange={handleSelected}>
-          <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
+          <RadioGroup.Label className="sr-only"></RadioGroup.Label>
           <div className="space-y-2">
             {answers.map((answer) => (
               <RadioGroup.Option

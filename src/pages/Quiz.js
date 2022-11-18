@@ -25,20 +25,18 @@ function randomizeArray(array) {
 
 const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
   const { selected, setSelected } = UserAuth();
+  const { score, setScore } = UserAuth();
 
   const difficultyLevels = [
     { value: "easy" },
     { value: "medium" },
     { value: "hard" },
   ];
-  const [score, setScore] = useState(0);
+
   const [diffSelect, setDiffSelect] = useState(difficultyLevels[0].value);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [questionAmount, setQuestionAmount] = useState(3);
-  //const [selected, setSelected] = useState(null);
-
-  //const [score, setScore] = useState(0);
 
   const loadQuestions = (e) => {
     e.preventDefault();
@@ -102,16 +100,13 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
       questions[currentQuestionIndex].selectedAnswer,
       selected
     );
-
-    //callback function that returns selected from NewRadioGroup
-
     const newScore =
       questions[currentQuestionIndex].correctAnswer === selected
         ? score + 1
         : score;
 
     setScore(newScore);
-    alert("score", score, newScore);
+    console.log("score", score, newScore);
     setCurrentQuestionIndex(currentQuestionIndex + 1);
   };
 
@@ -134,7 +129,7 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
       <div className="card-body"></div>
 
       {currentQuestionIndex < questions.length ? (
-        <div className="m-4 content-center ">
+        <div className="content-center ">
           <Question
             getSelected={getSelected}
             question={questions[currentQuestionIndex].question}
@@ -147,22 +142,27 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
             questionAmount={questionAmount}
             difficultyLevel={diffSelect}
           />
+
           <div className="flex flex-row justify-center items-center">
             <button
+              disabled={currentQuestionIndex === 0}
               onClick={handleNextQuestion}
               id="nextbutton"
               className="m-4 btn btn-success text-white btn-xs sm:btn-sm md:btn-md lg:btn-lg"
             >
               Next Question
             </button>
-            <button
-              disabled={currentQuestionIndex === 0}
-              onClick={handlePreviousQuestion}
-              id="prevbutton"
-              className="text-white m-4 btn btn-warning btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-            >
-              Prev Question
-            </button>
+            <h1 className="heading-1 justify-center items-center">
+              <span className="text-2xl badge badge-lg badge-primary p-8">
+                Question # {currentQuestionIndex + 1} of {questionAmount}
+              </span>
+            </h1>
+            {/* <div className="w-full mb-8">
+              <h1 className="heading-1 justify-center items-center">
+                Score
+                <span className="text-2xl badge badge-lg p-8">{score}</span>
+              </h1>
+            </div> */}
           </div>
         </div>
       ) : (
