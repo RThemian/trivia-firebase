@@ -1,38 +1,27 @@
 import { useState } from "react";
 import { RadioGroup } from "@headlessui/react";
-
-const plans = [
-  {
-    name: "Startup",
-    ram: "12GB",
-    cpus: "6 CPUs",
-    disk: "160 GB SSD disk",
-  },
-  {
-    name: "Business",
-    ram: "16GB",
-    cpus: "8 CPUs",
-    disk: "512 GB SSD disk",
-  },
-  {
-    name: "Enterprise",
-    ram: "32GB",
-    cpus: "12 CPUs",
-    disk: "1024 GB SSD disk",
-  },
-];
+import { UserAuth } from "./../components/AuthContext";
 
 export const NewRadioGroup = ({ answers, removeSpecChar }) => {
-  const [selected, setSelected] = useState(removeSpecChar(answers[0]));
+  const { selected, setSelected } = UserAuth();
 
-  function getSelected() {
-    return selected;
-  }
+  // const [selected, setSelected] = useState(null);
+  //removeSpecChar(answers[0])
+
+  // getSelected(selected);
+
+  // const Message = (currencyOne, currencyTwo) => {
+  //   console.log(`This much of ${currencyOne} gets you ${currencyTwo}`);
+  // };
+  // props.func(Message, exchange);
+  const handleSelected = (selected) => {
+    setSelected(selected);
+  };
 
   return (
     <div className="w-full px-4 py-16">
       <div className="mx-auto w-full max-w-md">
-        <RadioGroup value={selected} onChange={setSelected}>
+        <RadioGroup value={selected} onChange={handleSelected}>
           <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
           <div className="space-y-2">
             {answers.map((answer) => (

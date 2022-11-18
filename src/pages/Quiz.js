@@ -1,7 +1,7 @@
 //get trivia questions from api
-
+import { UserAuth } from "../components/AuthContext";
 import React, { useState, useEffect } from "react";
-import Question from "./Question";
+import Question from "./../components/Question";
 import axios from "axios";
 
 //put the randomizeArray function outside of the main component to controll its use
@@ -24,6 +24,8 @@ function randomizeArray(array) {
 }
 
 const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
+  const { selected, setSelected } = UserAuth();
+
   const difficultyLevels = [
     { value: "easy" },
     { value: "medium" },
@@ -34,6 +36,8 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [questionAmount, setQuestionAmount] = useState(3);
+  //const [selected, setSelected] = useState(null);
+
   //const [score, setScore] = useState(0);
 
   const loadQuestions = (e) => {
@@ -95,17 +99,19 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
     );
     console.log(
       "selected answer",
-      questions[currentQuestionIndex].selectedAnswer
+      questions[currentQuestionIndex].selectedAnswer,
+      selected
     );
 
+    //callback function that returns selected from NewRadioGroup
+
     const newScore =
-      questions[currentQuestionIndex].correctAnswer ===
-      questions[currentQuestionIndex].selectedAnswer
+      questions[currentQuestionIndex].correctAnswer === selected
         ? score + 1
         : score;
 
     setScore(newScore);
-    alert("score", newScore);
+    alert("score", score, newScore);
     setCurrentQuestionIndex(currentQuestionIndex + 1);
   };
 
@@ -118,6 +124,11 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
     setScore(0);
   };
 
+  const getSelected = (selected) => {
+    console.log("selected", selected);
+    setSelected(selected);
+  };
+
   return (
     <div className="card bg-secondary text-primary-content">
       <div className="card-body"></div>
@@ -125,6 +136,7 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
       {currentQuestionIndex < questions.length ? (
         <div className="m-4 content-center ">
           <Question
+            getSelected={getSelected}
             question={questions[currentQuestionIndex].question}
             answers={questions[currentQuestionIndex].answers}
             selectedAnswer={questions[currentQuestionIndex].selectedAnswer}
@@ -135,13 +147,21 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
             questionAmount={questionAmount}
             difficultyLevel={diffSelect}
           />
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-row justify-center items-center">
             <button
               onClick={handleNextQuestion}
               id="nextbutton"
-              className="m-4 btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+              className="m-4 btn btn-success text-white btn-xs sm:btn-sm md:btn-md lg:btn-lg"
             >
               Next Question
+            </button>
+            <button
+              disabled={currentQuestionIndex === 0}
+              onClick={handlePreviousQuestion}
+              id="prevbutton"
+              className="text-white m-4 btn btn-warning btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+            >
+              Prev Question
             </button>
           </div>
         </div>

@@ -1,10 +1,10 @@
 import React from "react";
-import { NewRadioGroup } from "../headlessComp/NewRadioGroup";
+import { NewRadioGroup } from "./../headlessComp/NewRadioGroup";
 
 const Question = ({ difficultyLevel, question, answers = [] }) => {
-  function getSelected() {
-    return answers.find((answer) => answer.selected);
-  } // getSelected
+  // getSelected = (selected) => {
+  //   console.log("selected", selected);
+  // };
 
   const removeSpecChar = (props) => {
     let result = props
@@ -38,11 +38,7 @@ const Question = ({ difficultyLevel, question, answers = [] }) => {
           </div>
 
           {answers && answers.length && (
-            <NewRadioGroup
-              getSelected={getSelected}
-              removeSpecChar={removeSpecChar}
-              answers={answers}
-            />
+            <NewRadioGroup removeSpecChar={removeSpecChar} answers={answers} />
           )}
         </>
       )}

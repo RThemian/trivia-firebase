@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { db, auth } from "./firebase";
-import { UserAuth } from "./AuthContext";
+import { db, auth } from "./../components/firebase";
+import { UserAuth } from "./../components/AuthContext";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 

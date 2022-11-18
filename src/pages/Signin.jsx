@@ -1,7 +1,7 @@
 import { RadioGroup } from "@headlessui/react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "./AuthContext";
+import { UserAuth } from "./../components/AuthContext";
 
 import { NewRadioGroup } from "../headlessComp/NewRadioGroup";
 

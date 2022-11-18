@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
-import { db } from "./firebase";
+//import auth db from ./firebase.js
+import { auth, db } from "./../components/firebase.js";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import LoadingSpinner from "./LoadingSpinner";
-import { UserAuth } from "./AuthContext";
+import LoadingSpinner from "./../components/LoadingSpinner";
+import { UserAuth } from "./../components/AuthContext";
 
 const Account = () => {
   //match logged in user to user in firestore and return display name
