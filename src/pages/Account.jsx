@@ -16,6 +16,7 @@ const Account = () => {
   const [error, setError] = React.useState(null);
 
   let navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await logout();

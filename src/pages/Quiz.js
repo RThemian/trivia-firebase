@@ -3,6 +3,8 @@ import { UserAuth } from "../components/AuthContext";
 import React, { useState, useEffect } from "react";
 import Question from "./../components/Question";
 import axios from "axios";
+import sunset_lake from "../images/sunset_lake.jpg";
+import { Navigate, useNavigate } from "react-router-dom";
 
 //put the randomizeArray function outside of the main component to controll its use
 
@@ -119,19 +121,20 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
     setScore(0);
   };
 
-  const getSelected = (selected) => {
-    console.log("selected", selected);
-    setSelected(selected);
-  };
+  let percentScore = Number(score / questionAmount).toLocaleString(undefined, {
+    style: "percent",
+    minimumFractionDigits: 2,
+  });
+
+  // let navigate = useNavigate();
 
   return (
-    <div className="card bg-secondary text-primary-content">
+    <div className="card bg-japaneseCoral-600 text-primary-content">
       <div className="card-body"></div>
 
       {currentQuestionIndex < questions.length ? (
         <div className="content-center ">
           <Question
-            getSelected={getSelected}
             question={questions[currentQuestionIndex].question}
             answers={questions[currentQuestionIndex].answers}
             selectedAnswer={questions[currentQuestionIndex].selectedAnswer}
@@ -145,7 +148,7 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
 
           <div className="flex flex-row justify-center items-center">
             <button
-              disabled={currentQuestionIndex === 0}
+              disabled={currentQuestionIndex < 0}
               onClick={handleNextQuestion}
               id="nextbutton"
               className="m-4 btn btn-success text-white btn-xs sm:btn-sm md:btn-md lg:btn-lg"
@@ -166,12 +169,17 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
           </div>
         </div>
       ) : (
-        <div className="quiz__end">
-          <h2 className="quiz__end__title">Quiz Complete</h2>
-          <div className="quiz__end__score">Score: {score}</div>
-          <button className="quiz__end__restart" onClick={handleRestart}>
-            Restart
-          </button>
+        <div className="card w-100 bg-hawkTurquoise-800 text-neutral-content m-4">
+          <div className="card-body items-center text-center">
+            <h1 className="card-title text-4xl">Quiz Complete!</h1>
+            <h1 className="text-4xl">Percent Score: {percentScore}</h1>
+            <div className="card-actions justify-end">
+              <button className="btn btn-accent" onClick={handleRestart}>
+                Play another round?
+              </button>
+              <button className="btn btn-ghost">I'm done log me out!</button>
+            </div>
+          </div>
         </div>
       )}
       {questions.length < 1 && ( //if there are no questions, show the form

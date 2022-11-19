@@ -11,8 +11,8 @@ import { AuthContextProvider } from "./components/AuthContext";
 
 function App() {
   return (
-    <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
-      <h1 className="text-center text-3xl font-bold mt-10 ">
+    <div className="container mx-auto rounded-xl shadow border p-8 m-10">
+      <h1 className="text-center text-blancaPeak-200 text-3xl font-bold mt-10 ">
         Quiz App with React, Firebase, and Tailwind CSS
       </h1>
       <AuthContextProvider>

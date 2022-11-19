@@ -31,7 +31,7 @@ export const NewRadioGroup = ({ answers, removeSpecChar }) => {
       <div className="mx-auto w-full max-w-md">
         <RadioGroup value={selected} onChange={handleSelected}>
           <RadioGroup.Label className="sr-only"></RadioGroup.Label>
-          <div className="space-y-2">
+          <div className="space-y-2 ">
             {answers.map((answer) => (
               <RadioGroup.Option
                 key={answer}
@@ -39,20 +39,22 @@ export const NewRadioGroup = ({ answers, removeSpecChar }) => {
                 className={({ active, checked }) =>
                   `${
                     active
-                      ? "ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300"
+                      ? " ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300"
                       : ""
                   }
                   ${
-                    checked ? "bg-sky-900 bg-opacity-75 text-white" : "bg-white"
+                    checked
+                      ? "bg-japaneseCoral-800 text-blancaPeak-50 bg-opacity-75 text-white"
+                      : "bg-blancaPeak-800 text-white"
                   }
-                    relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
+                   bg-clearPurple-50 text-hawkTurquoise-900 relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none`
                 }
               >
                 {({ active, checked }) => (
                   <>
                     <div className="flex w-full items-center justify-between">
                       <div className="flex items-center">
-                        <div className="text-lg">
+                        <div className="text-4xl">
                           <RadioGroup.Label
                             as="p"
                             className={`font-medium  ${
