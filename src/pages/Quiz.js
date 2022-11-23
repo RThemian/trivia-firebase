@@ -3,8 +3,7 @@ import { UserAuth } from "../components/AuthContext";
 import React, { useState, useEffect } from "react";
 import Question from "./../components/Question";
 import axios from "axios";
-import sunset_lake from "../images/sunset_lake.jpg";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //put the randomizeArray function outside of the main component to controll its use
 
@@ -28,7 +27,11 @@ function randomizeArray(array) {
 const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
   const { selected, setSelected } = UserAuth();
   const { score, setScore } = UserAuth();
+  const { questions, setQuestions } = UserAuth();
+  const { currentQuestionIndex, setCurrentQuestionIndex } = UserAuth();
+  const { questionAmount, setQuestionAmount } = UserAuth();
 
+  let navigate = useNavigate();
   const difficultyLevels = [
     { value: "easy" },
     { value: "medium" },
@@ -36,9 +39,6 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
   ];
 
   const [diffSelect, setDiffSelect] = useState(difficultyLevels[0].value);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [questions, setQuestions] = useState([]);
-  const [questionAmount, setQuestionAmount] = useState(3);
 
   const loadQuestions = (e) => {
     e.preventDefault();
@@ -116,24 +116,12 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
     setCurrentQuestionIndex(currentQuestionIndex - 1);
   };
 
-  const handleRestart = () => {
-    setCurrentQuestionIndex(0);
-    setScore(0);
-  };
-
-  let percentScore = Number(score / questionAmount).toLocaleString(undefined, {
-    style: "percent",
-    minimumFractionDigits: 2,
-  });
-
   // let navigate = useNavigate();
 
   return (
-    <div className="card bg-japaneseCoral-600 text-primary-content">
-      <div className="card-body"></div>
-
+    <div className="card text-primary-content">
       {currentQuestionIndex < questions.length ? (
-        <div className="content-center ">
+        <div className="content-center card-body ">
           <Question
             question={questions[currentQuestionIndex].question}
             answers={questions[currentQuestionIndex].answers}
@@ -146,52 +134,44 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
             difficultyLevel={diffSelect}
           />
 
-          <div className="flex flex-row justify-center items-center">
-            <button
-              disabled={currentQuestionIndex < 0}
-              onClick={handleNextQuestion}
-              id="nextbutton"
-              className="m-4 btn btn-success text-white btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-            >
-              Next Question
-            </button>
+          <div className="flex flex-row justify-center items-center mb-16">
+            {currentQuestionIndex < questionAmount + 1 ? (
+              <button
+                onClick={handleNextQuestion}
+                id="nextbutton"
+                className="m-4 btn btn-success text-white btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+              >
+                Next Question
+              </button>
+            ) : (
+              <button
+                onClick={navigate("/endscreen")}
+                className="m-4 btn btn-warning text-blancaPeak-200 btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+              >
+                Finish Quiz
+              </button>
+            )}
+
             <h1 className="heading-1 justify-center items-center">
               <span className="text-2xl badge badge-lg badge-primary p-8">
                 Question # {currentQuestionIndex + 1} of {questionAmount}
               </span>
             </h1>
-            {/* <div className="w-full mb-8">
-              <h1 className="heading-1 justify-center items-center">
-                Score
-                <span className="text-2xl badge badge-lg p-8">{score}</span>
-              </h1>
-            </div> */}
           </div>
         </div>
       ) : (
-        <div className="card w-100 bg-hawkTurquoise-800 text-neutral-content m-4">
-          <div className="card-body items-center text-center">
-            <h1 className="card-title text-4xl">Quiz Complete!</h1>
-            <h1 className="text-4xl">Percent Score: {percentScore}</h1>
-            <div className="card-actions justify-end">
-              <button className="btn btn-accent" onClick={handleRestart}>
-                Play another round?
-              </button>
-              <button className="btn btn-ghost">I'm done log me out!</button>
-            </div>
-          </div>
-        </div>
+        ""
       )}
       {questions.length < 1 && ( //if there are no questions, show the form
-        <div className="rounded-md m-4 p-4 flex-row bg-blue-500">
+        <div className="rounded-md m-4 p-4 flex-row bg-hawkTurquoise-500">
           <form className="text-2xl mx-2 px-3" onSubmit={loadQuestions}>
-            <label htmlFor="difficulty" className="m-2">
+            <label htmlFor="difficulty" className="m-2 ">
               Difficulty
             </label>
             <select
               id="difficulty"
               name="difficulty"
-              className="text-base text-red-400 p-2 rounded-md"
+              className="text-base text-clearPurple-700 p-2 rounded-md"
             >
               {difficultyLevels.map((level) => (
                 <option key={level.value} value={level.value}>
@@ -205,7 +185,7 @@ const Quiz = ({ pointsPossible = 0, setPointsPossible }) => {
             <select
               id="questionAmount"
               name="questionAmount"
-              className="text-red-400 p-2 rounded-md"
+              className="text-clearPurple-700 p-2 rounded-md"
             >
               <option value="3">3</option>
               <option value="5">5</option>

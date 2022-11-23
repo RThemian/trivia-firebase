@@ -5,16 +5,25 @@ import Quiz from "./pages/Quiz";
 import ProtectedRoute from "./components/ProtectedRoute";
 import React from "react";
 import "./index.css";
-import { BrowserRouter, Switch, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import EndScreen from "./pages/EndScreen";
 import { AuthContextProvider } from "./components/AuthContext";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
-    <div className="container mx-auto rounded-xl shadow border p-8 m-10">
-      <h1 className="text-center text-blancaPeak-200 text-3xl font-bold mt-10 ">
-        Quiz App with React, Firebase, and Tailwind CSS
-      </h1>
+    <div className="rounded-xl bg-japaneseCoral-100 shadow border">
+      <header className="mt-2">
+        <h4 className="text-center text-hawkTurquoise-800 text-3xl font-bold">
+          Quiz App with React, Firebase, and Tailwind CSS
+        </h4>
+      </header>
       <AuthContextProvider>
         <Routes>
           <Route path="/" element={<Signin />} />
@@ -28,8 +37,8 @@ function App() {
             }
           />
           <Route path="/quiz" element={<Quiz />} />
-          <Route path="*" element={<h1>404 Not Found</h1>} />
           <Route path="/endscreen" element={<EndScreen />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </AuthContextProvider>
     </div>

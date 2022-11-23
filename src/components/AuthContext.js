@@ -12,6 +12,9 @@ const UserContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [selected, setSelected] = useState(null);
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [questionAmount, setQuestionAmount] = useState(3);
   const [score, setScore] = useState(0);
 
   const createUser = (email, password) => {
@@ -47,6 +50,12 @@ export const AuthContextProvider = ({ children }) => {
         setSelected,
         score,
         setScore,
+        questions,
+        setQuestions,
+        currentQuestionIndex,
+        setCurrentQuestionIndex,
+        questionAmount,
+        setQuestionAmount,
       }}
     >
       {children}

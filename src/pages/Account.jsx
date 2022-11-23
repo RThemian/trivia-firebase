@@ -97,7 +97,7 @@ const Account = () => {
 
   return (
     <>
-      <div className="max-w-[600px] mx-auto my-16 p-4 flex flex-row ml-4">
+      <div className="max-w-[900px] my-16 p-4 flex flex-row mx-auto">
         <div className="col-span-2 p-4">
           <h1 className="text-2xl font-bold py-4">Account</h1>
           {email || user ? (
@@ -144,10 +144,10 @@ const Account = () => {
                     key={score.id}
                     className={
                       score.score >= 8
-                        ? "bg-green-200"
+                        ? "bg-hawkTurquoise-50"
                         : score.score >= 6
-                        ? "bg-yellow-200"
-                        : "bg-red-200"
+                        ? "bg-clearPurple-100"
+                        : "bg-japaneseCoral-800"
                     }
                   >
                     <td className="border px-4 py-2">{score.score}</td>
@@ -162,11 +162,13 @@ const Account = () => {
             <h3>No scores yet</h3>
           )}
         </div>
-        <div className="col-span-2 p-4">
-          <h1 className="text-2xl font-bold py-4">Play the next Quiz:</h1>
+        <div className="col-lg-6 w-full p-4 flex flex-col items-center">
+          <h1 className="text-2xl font-bold py-4 w-full px-11">
+            Play the next Quiz:
+          </h1>
           {/* make a button that routes to /quiz */}
-          <Link to="/quiz">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <Link to="/quiz" className="flex flex-col items-center p-16">
+            <button className="bg-hawkTurquoise-500 btn btn-wide align-middle content-center hover:bg-hawkTurquoise-700 text-blancaPeak-100 font-bold py-2 px-4 rounded">
               Play
             </button>
           </Link>

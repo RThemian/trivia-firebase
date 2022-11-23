@@ -22,13 +22,12 @@ const Question = ({ difficultyLevel, question, answers = [] }) => {
   };
 
   return (
-    <div className="card items-center m-0">
+    <div className="card items-center">
       {question && (
         <>
-          <div className="card w-50 bg-japaneseCoral-900 m-4 text-primary-content justify-center items-center">
+          <div className="card w-50 bg-japaneseCoral-900 mb-2 text-primary-content justify-center items-center">
             <div className="card-body m-0">
               <h1 className="text-4xl">{removeSpecChar(question)}</h1>
-
               <h2>
                 Difficulty Level:{" "}
                 <span style={{ color: "#FF6150" }}>
@@ -37,7 +36,7 @@ const Question = ({ difficultyLevel, question, answers = [] }) => {
               </h2>
             </div>
           </div>
-          <div className="w-full ">
+          <div className="w-full">
             {answers && answers.length && (
               <NewRadioGroup
                 removeSpecChar={removeSpecChar}

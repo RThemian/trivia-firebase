@@ -7,21 +7,14 @@ export const NewRadioGroup = ({ answers, removeSpecChar }) => {
   const { score, setScore } = UserAuth();
 
   // const [selected, setSelected] = useState(null);
-  //removeSpecChar(answers[0])
 
-  // getSelected(selected);
-
-  // const Message = (currencyOne, currencyTwo) => {
-  //   console.log(`This much of ${currencyOne} gets you ${currencyTwo}`);
-  // };
-  // props.func(Message, exchange);
   const handleSelected = (selected) => {
     setSelected(selected);
   };
 
   return (
-    <div className="w-full px-4 py-16">
-      <div className="mb-3">
+    <div className="w-full ">
+      <div className="mb-2">
         <h1 className="heading-1 flex flex-col justify-center items-center">
           <span className="text-2xl text-white badge badge-lg bg-blue-600 p-10">
             Score = {score}
